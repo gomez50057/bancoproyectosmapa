@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa proyectos</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+</head>
+<body>
+
+  
+  <button id="toggleSidebar">Cerrar</button>
+
+  <div id="sidebar">
+    <h1 class="sidebar-title">Proyectos</h1>
+    <label for="selectorMunicipio">Selecciona por municipio:</label>
+    <select id="selectorMunicipio">
+        <option value="">-- Selecciona por municipio --</option>
+    </select>
+
+    <select id="selectorDependencia">
+        <option value="">-- Primero selecciona un municipio --</option>
+    </select>
+    <label for="selectorProyecto">Selecciona por proyecto:</label>
+    <select id="selectorProyecto">
+        <option value="">-- Selecciona por proyecto --</option>
+    </select>
+    <label for="selectorDependenciaOrganismo">Selecciona una dependencia/organismo:</label>
+<select id="selectorDependenciaOrganismo">
+    <option value="">-- Selecciona una dependencia/organismo --</option>
+    <!-- Las opciones se llenarán dinámicamente con JavaScript -->
+</select>
+
+<label for="listaProyectosDependencia">Proyectos de la dependencia/organismo:</label>
+<ul id="listaProyectosDependencia">
+    <!-- Los proyectos se listarán aquí -->
+</ul>
+
+    <div id="resultadosProyectos">
+    </div>
+</div>
+
+    <div id="map"></div>
+    <script src="capas/proyectos_kmz.js"></script>
+    <script src="capas/proyectos_kmz_municipio.js"></script>
+    <script src="capas/municipios.js"></script>
+    <script src="capas/proyectos.js"></script>
+    <script src="capas/dependencias.js"></script>
+    <script src="capas/proyectos_filtros.js"></script>
+    <script src="mapa.js"></script>
+    
+</body>
+</html>
