@@ -3,51 +3,54 @@ var map = L.map('map', {
     center: [20.5791, -98.9621],
     zoom: 9,
     zoomControl: false,
-    minZoom:8,
+    minZoom: 8,
     maxZoom: 18 // Establece aquí el nivel máximo de zoom que desees
 });
 
 
 // Añadiendo la capa base al mapa
-var tiles =L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-	subdomains: 'abcd',
-	maxZoom: 20
+var tiles = L.tileLayer('http://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+    maxZoom: 20,
+    subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
 }).addTo(map);
+
+map.attributionControl.setPrefix(''); // Esto elimina cualquier texto de atribución
+
+
 
 // Función para obtener el color en función del número de proyectos
 function getColor(d) {
     return d > 29 ? 'black' :
-           d > 17 ? '#006d2c' :
-           d > 9  ? '#31a354' :
-           d > 4  ? '#74c476' :
-           d > 2  ? '#bae4b3' :
-           d > 0  ? '#edf8e9' :
-                    'white';
+        d > 17 ? '#006d2c' :
+            d > 9 ? '#31a354' :
+                d > 4 ? '#74c476' :
+                    d > 2 ? '#bae4b3' :
+                        d > 0 ? '#edf8e9' :
+                            'white';
 }
 
 // Estilo para las áreas geográficas del mapa
 function style(feature) {
     return {
-        fillColor: '#DDc9A3',
+        fillColor: 'rgba(0, 0, 0, 0.4)',
         weight: 1,
-        opacity:0.7,
-        color: 'black',
-        fillOpacity: 0.2
+        opacity: 0.7,
+        color: '#fff',
+        fillOpacity: 0.6
     };
 }
 function style2(feature) {
     return {
-    color: "#691c32", // Color de la línea
-    weight: 7,        // Grosor de la línea
-    opacity: 0.9     // Opacidad de la línea
+        color: "#691c32", // Color de la línea
+        weight: 7,        // Grosor de la línea
+        opacity: 0.9     // Opacidad de la línea
     };
 }
 function style3(feature) {
     return {
-    color: "#0099CD", // Color de la línea
-    weight: 7,        // Grosor de la línea
-    opacity: 0.9     // Opacidad de la línea
+        color: "#0099CD", // Color de la línea
+        weight: 7,        // Grosor de la línea
+        opacity: 0.9     // Opacidad de la línea
     };
 }
 // Resalta la característica bajo el mouse
@@ -184,12 +187,12 @@ var customIcon7 = L.icon({
 function onEachFeature(feature, layer) {
     if (feature.geometry.type === 'Point') {
         // Crea un marcador con el ícono personalizado
-        var marker = L.marker([feature.geometry.coordinates[1], feature.geometry.coordinates[0]], {icon: customIcon});
+        var marker = L.marker([feature.geometry.coordinates[1], feature.geometry.coordinates[0]], { icon: customIcon });
 
         // Añade un evento click al marcador
-        marker.on('click', function() {
+        marker.on('click', function () {
             // Filtra las propiedades del feature para excluir las que tienen valor null
-            var propertiesToShow = Object.entries(feature.properties).reduce(function(acc, [key, value]) {
+            var propertiesToShow = Object.entries(feature.properties).reduce(function (acc, [key, value]) {
                 if (value !== null) { // Asegúrate de ajustar esta condición si necesitas excluir valores "falsy" adicionales
                     acc[key] = value;
                 }
@@ -203,29 +206,29 @@ function onEachFeature(feature, layer) {
                 <th style="border: 1px solid black; padding: 5px;">Valor</th>
             </tr>`;
 
-// Iterar a través de todas las propiedades del feature
-for (var key in feature.properties) {
-// Solo añadir una fila si el valor de la propiedad no es null
-if (feature.properties[key] !== null) {
-tableHtml += `<tr>
+            // Iterar a través de todas las propiedades del feature
+            for (var key in feature.properties) {
+                // Solo añadir una fila si el valor de la propiedad no es null
+                if (feature.properties[key] !== null) {
+                    tableHtml += `<tr>
                 <td style="border: 1px solid black; padding: 5px;">${key}</td>
                 <td style="border: 1px solid black; padding: 5px;">${feature.properties[key]}</td>
               </tr>`;
-}
-}
+                }
+            }
 
-// Cerrar la tabla
-tableHtml += `</table>`;
+            // Cerrar la tabla
+            tableHtml += `</table>`;
 
-// Mostrar el popup de SweetAlert2 con la tabla
-Swal.fire({
-title: feature.properties.Name,
-html: tableHtml,
-width: 'auto', // Ajustar al contenido
-padding: '3em',
-backdrop: true
-});
-});
+            // Mostrar el popup de SweetAlert2 con la tabla
+            Swal.fire({
+                title: feature.properties.Name,
+                html: tableHtml,
+                width: 'auto', // Ajustar al contenido
+                padding: '3em',
+                backdrop: true
+            });
+        });
         // Añade el marcador al mapa
         marker.addTo(map);
     }
@@ -233,12 +236,12 @@ backdrop: true
 function onEachFeature2(feature, layer) {
     if (feature.geometry.type === 'Point') {
         // Crea un marcador con el ícono personalizado
-        var marker = L.marker([feature.geometry.coordinates[1], feature.geometry.coordinates[0]], {icon: customIcon2});
+        var marker = L.marker([feature.geometry.coordinates[1], feature.geometry.coordinates[0]], { icon: customIcon2 });
 
         // Añade un evento click al marcador
-        marker.on('click', function() {
+        marker.on('click', function () {
             // Filtra las propiedades del feature para excluir las que tienen valor null
-            var propertiesToShow = Object.entries(feature.properties).reduce(function(acc, [key, value]) {
+            var propertiesToShow = Object.entries(feature.properties).reduce(function (acc, [key, value]) {
                 if (value !== null) { // Asegúrate de ajustar esta condición si necesitas excluir valores "falsy" adicionales
                     acc[key] = value;
                 }
@@ -246,14 +249,14 @@ function onEachFeature2(feature, layer) {
             }, {});
 
             // Construye el HTML de la tabla con los datos filtrados y añade estilos para los bordes
-            var tableHtml = '<table style="width:100%; border-collapse: collapse;">' + 
-                '<tr><th style="border: 1px solid black; padding: 8px;">Propiedad</th><th style="border: 1px solid black; padding: 8px;">Valor</th></tr>' + 
-                Object.entries(propertiesToShow).map(function([key, value]) {
+            var tableHtml = '<table style="width:100%; border-collapse: collapse;">' +
+                '<tr><th style="border: 1px solid black; padding: 8px;">Propiedad</th><th style="border: 1px solid black; padding: 8px;">Valor</th></tr>' +
+                Object.entries(propertiesToShow).map(function ([key, value]) {
                     return `<tr><td style="border: 1px solid black; padding: 8px;">${key}</td><td style="border: 1px solid black; padding: 8px;">${value}</td></tr>`;
                 }).join('') + '</table>';
 
             // Muestra los campos filtrados en un Swal.fire con el formato de tabla
-           // Asumiendo que feature.properties contiene una propiedad llamada 'Name'
+            // Asumiendo que feature.properties contiene una propiedad llamada 'Name'
             Swal.fire({
                 title: feature.properties.Name, // Concatena el valor de la propiedad 'Name'
                 html: tableHtml,
@@ -263,7 +266,7 @@ function onEachFeature2(feature, layer) {
                 }
             });
 
-            
+
         });
 
         // Añade el marcador al mapa
@@ -273,12 +276,12 @@ function onEachFeature2(feature, layer) {
 function onEachFeature3(feature, layer) {
     if (feature.geometry.type === 'Point') {
         // Crea un marcador con el ícono personalizado
-        var marker = L.marker([feature.geometry.coordinates[1], feature.geometry.coordinates[0]], {icon: customIcon3});
+        var marker = L.marker([feature.geometry.coordinates[1], feature.geometry.coordinates[0]], { icon: customIcon3 });
 
         // Añade un evento click al marcador
-        marker.on('click', function() {
+        marker.on('click', function () {
             // Filtra las propiedades del feature para excluir las que tienen valor null
-            var propertiesToShow = Object.entries(feature.properties).reduce(function(acc, [key, value]) {
+            var propertiesToShow = Object.entries(feature.properties).reduce(function (acc, [key, value]) {
                 if (value !== null) { // Asegúrate de ajustar esta condición si necesitas excluir valores "falsy" adicionales
                     acc[key] = value;
                 }
@@ -286,14 +289,14 @@ function onEachFeature3(feature, layer) {
             }, {});
 
             // Construye el HTML de la tabla con los datos filtrados y añade estilos para los bordes
-            var tableHtml = '<table style="width:100%; border-collapse: collapse;">' + 
-                '<tr><th style="border: 1px solid black; padding: 8px;">Propiedad</th><th style="border: 1px solid black; padding: 8px;">Valor</th></tr>' + 
-                Object.entries(propertiesToShow).map(function([key, value]) {
+            var tableHtml = '<table style="width:100%; border-collapse: collapse;">' +
+                '<tr><th style="border: 1px solid black; padding: 8px;">Propiedad</th><th style="border: 1px solid black; padding: 8px;">Valor</th></tr>' +
+                Object.entries(propertiesToShow).map(function ([key, value]) {
                     return `<tr><td style="border: 1px solid black; padding: 8px;">${key}</td><td style="border: 1px solid black; padding: 8px;">${value}</td></tr>`;
                 }).join('') + '</table>';
 
             // Muestra los campos filtrados en un Swal.fire con el formato de tabla
-           // Asumiendo que feature.properties contiene una propiedad llamada 'Name'
+            // Asumiendo que feature.properties contiene una propiedad llamada 'Name'
             Swal.fire({
                 title: feature.properties.Name, // Concatena el valor de la propiedad 'Name'
                 html: tableHtml,
@@ -303,7 +306,7 @@ function onEachFeature3(feature, layer) {
                 }
             });
 
-            
+
         });
 
         // Añade el marcador al mapa
@@ -313,12 +316,12 @@ function onEachFeature3(feature, layer) {
 function onEachFeature4(feature, layer) {
     if (feature.geometry.type === 'Point') {
         // Crea un marcador con el ícono personalizado
-        var marker = L.marker([feature.geometry.coordinates[1], feature.geometry.coordinates[0]], {icon: customIcon3});
+        var marker = L.marker([feature.geometry.coordinates[1], feature.geometry.coordinates[0]], { icon: customIcon3 });
 
         // Añade un evento click al marcador
-        marker.on('click', function() {
+        marker.on('click', function () {
             // Filtra las propiedades del feature para excluir las que tienen valor null
-            var propertiesToShow = Object.entries(feature.properties).reduce(function(acc, [key, value]) {
+            var propertiesToShow = Object.entries(feature.properties).reduce(function (acc, [key, value]) {
                 if (value !== null) { // Asegúrate de ajustar esta condición si necesitas excluir valores "falsy" adicionales
                     acc[key] = value;
                 }
@@ -326,14 +329,14 @@ function onEachFeature4(feature, layer) {
             }, {});
 
             // Construye el HTML de la tabla con los datos filtrados y añade estilos para los bordes
-            var tableHtml = '<table style="width:100%; border-collapse: collapse;">' + 
-                '<tr><th style="border: 1px solid black; padding: 8px;">Propiedad</th><th style="border: 1px solid black; padding: 8px;">Valor</th></tr>' + 
-                Object.entries(propertiesToShow).map(function([key, value]) {
+            var tableHtml = '<table style="width:100%; border-collapse: collapse;">' +
+                '<tr><th style="border: 1px solid black; padding: 8px;">Propiedad</th><th style="border: 1px solid black; padding: 8px;">Valor</th></tr>' +
+                Object.entries(propertiesToShow).map(function ([key, value]) {
                     return `<tr><td style="border: 1px solid black; padding: 8px;">${key}</td><td style="border: 1px solid black; padding: 8px;">${value}</td></tr>`;
                 }).join('') + '</table>';
 
             // Muestra los campos filtrados en un Swal.fire con el formato de tabla
-           // Asumiendo que feature.properties contiene una propiedad llamada 'Name'
+            // Asumiendo que feature.properties contiene una propiedad llamada 'Name'
             Swal.fire({
                 title: feature.properties.Name, // Concatena el valor de la propiedad 'Name'
                 html: tableHtml,
@@ -343,7 +346,7 @@ function onEachFeature4(feature, layer) {
                 }
             });
 
-            
+
         });
 
         // Añade el marcador al mapa
@@ -358,16 +361,16 @@ var TulaLayer = L.geoJSON(CUL2C2023002, {
     onEachFeature: onEachFeature // Pasar la función aquí para que se aplique a cada feature
 });
 var DistActPachsLayer = L.geoJSON(DSC1B2023001, {
-    pointToLayer: function(feature, latlng) {
+    pointToLayer: function (feature, latlng) {
         // Crea un marcador con el ícono personalizado
-        return L.marker(latlng, {icon: customIcon2});
+        return L.marker(latlng, { icon: customIcon2 });
     },
     onEachFeature: onLayerClick
 }).addTo(map);
 var DistJorobasLayer = L.geoJSON(SIP1B2023005, {
-    pointToLayer: function(feature, latlng) {
+    pointToLayer: function (feature, latlng) {
         // Crea un marcador con el ícono personalizado
-        return L.marker(latlng, {icon: customIcon2});
+        return L.marker(latlng, { icon: customIcon2 });
     },
     onEachFeature: onLayerClick
 }).addTo(map);
@@ -380,9 +383,9 @@ var MejorInstDeporLayer = L.geoJSON(IHD2D2023001, {
     style: style2,
 }).addTo(map);
 var MejorInstDeporPointLayer = L.geoJSON(IHD2D2023001_, {
-    pointToLayer: function(feature, latlng) {
+    pointToLayer: function (feature, latlng) {
         // Crea un marcador con el ícono personalizado
-        return L.marker(latlng, {icon: customIcon3});
+        return L.marker(latlng, { icon: customIcon3 });
     },
     onEachFeature: onLayerClick
 }).addTo(map);
@@ -395,9 +398,9 @@ var CentralAbastoLayer = L.geoJSON(UPL3D2023012, {
     onEachFeature: onLayerClick
 }).addTo(map);
 var CentralAbastoPuntoLayer = L.geoJSON(UPL3D2023012Punto, {
-    pointToLayer: function(feature, latlng) {
+    pointToLayer: function (feature, latlng) {
         // Crea un marcador con el ícono personalizado
-        return L.marker(latlng, {icon: customIcon4});
+        return L.marker(latlng, { icon: customIcon4 });
     },
     onEachFeature: onLayerClick
 }).addTo(map);
@@ -405,41 +408,41 @@ var CeresoTasquilloLayer = L.geoJSON(SEG2F2023001, {
     style: style2,
 }).addTo(map);
 var CeresoTasquilloPuntoLayer = L.geoJSON(SEG2F2023001Punto, {
-    pointToLayer: function(feature, latlng) {
+    pointToLayer: function (feature, latlng) {
         // Crea un marcador con el ícono personalizado
-        return L.marker(latlng, {icon: customIcon5});
+        return L.marker(latlng, { icon: customIcon5 });
     },
     onEachFeature: onLayerClick
 }).addTo(map);
-var presaZacualtipan= L.geoJSON(SIP1A2023012, {
+var presaZacualtipan = L.geoJSON(SIP1A2023012, {
     style: style3,
     onEachFeature: onLayerClick
 }).addTo(map);
-var AmpliacionMex_Pach= L.geoJSON(SIP1B2023001, {
+var AmpliacionMex_Pach = L.geoJSON(SIP1B2023001, {
     style: style2,
     onEachFeature: onLayerClick
 }).addTo(map);
-var ModernPort_Tasquillo= L.geoJSON(SIP1B2023003, {
+var ModernPort_Tasquillo = L.geoJSON(SIP1B2023003, {
     style: style2,
     onEachFeature: onLayerClick
 }).addTo(map);
-var ModernApan_Calpu= L.geoJSON(SIP1B2023004, {
+var ModernApan_Calpu = L.geoJSON(SIP1B2023004, {
     style: style2,
     onEachFeature: onLayerClick
 }).addTo(map);
-var EjeActop_Atoto= L.geoJSON(SIP1B2023006, {
+var EjeActop_Atoto = L.geoJSON(SIP1B2023006, {
     style: style2,
     onEachFeature: onLayerClick
 }).addTo(map);
-var LibMix_Progre= L.geoJSON(SIP1B2023009, {
+var LibMix_Progre = L.geoJSON(SIP1B2023009, {
     style: style2,
     onEachFeature: onLayerClick
 }).addTo(map);
-var TubIntercon= L.geoJSON(UPL1A2023004, {
+var TubIntercon = L.geoJSON(UPL1A2023004, {
     style: style3,
     onEachFeature: onLayerClick
 }).addTo(map);
-var LibIxm_Cardo= L.geoJSON(UPL1B2023003, {
+var LibIxm_Cardo = L.geoJSON(UPL1B2023003, {
     style: style2,
     onEachFeature: onLayerClick
 }).addTo(map);
@@ -448,9 +451,9 @@ var Maestranza = L.geoJSON(UPL2C2023007, {
     onEachFeature: onLayerClick
 }).addTo(map);
 var Maestranza_Punto = L.geoJSON(UPL2C2023007_Punto, {
-    pointToLayer: function(feature, latlng) {
+    pointToLayer: function (feature, latlng) {
         // Crea un marcador con el ícono personalizado
-        return L.marker(latlng, {icon: customIcon6});
+        return L.marker(latlng, { icon: customIcon6 });
     },
     onEachFeature: onLayerClick
 }).addTo(map);
@@ -460,18 +463,18 @@ var Camino_RealTierraAdentro = L.geoJSON(UPL2G2023002, {
 }).addTo(map);
 
 //POR MUNICIPIOS---------------------------------
-var utvmRehabilitacion=L.geoJSON(IXM2A2023014, {
+var utvmRehabilitacion = L.geoJSON(IXM2A2023014, {
     style: style2,
     onEachFeature: onLayerClick
 }).addTo(map);
 var Maestranza_Punto = L.geoJSON(IXM2A2023014Punto, {
-    pointToLayer: function(feature, latlng) {
+    pointToLayer: function (feature, latlng) {
         // Crea un marcador con el ícono personalizado
-        return L.marker(latlng, {icon: customIcon7});
+        return L.marker(latlng, { icon: customIcon7 });
     },
     onEachFeature: onLayerClick
 }).addTo(map);
-var andadorIxm_SanNicolas=L.geoJSON(IXM2G2023002, {
+var andadorIxm_SanNicolas = L.geoJSON(IXM2G2023002, {
     style: style2,
     onEachFeature: onLayerClick
 }).addTo(map);
@@ -487,7 +490,7 @@ function resetMunicipiosStyle() {
 
 function highlightMunicipio(selectedMunicipio) {
     var foundLayer = null;
-    geojson.eachLayer(function(layer) {
+    geojson.eachLayer(function (layer) {
         if (layer.feature.properties.NOMGEO === selectedMunicipio) {
             foundLayer = layer;
             layer.setStyle({
@@ -504,7 +507,7 @@ function highlightMunicipio(selectedMunicipio) {
         map.fitBounds(foundLayer.getBounds());
     }
 }
-document.getElementById('selectorMunicipio').addEventListener('change', function() {
+document.getElementById('selectorMunicipio').addEventListener('change', function () {
     var selectedMunicipio = this.value; // Obtiene el municipio seleccionado del dropdown
     resetMunicipiosStyle(); // Restablece el estilo de todos los municipios
     highlightMunicipio(selectedMunicipio); // Resalta el municipio seleccionado y hace zoom
@@ -514,7 +517,7 @@ var selectorMunicipio = document.getElementById('selectorMunicipio');
 var selectorDependencia = document.getElementById('selectorDependencia');
 
 // Rellenar selector de municipios con opciones
-Object.keys(proyectos_filtros).forEach(function(municipio) {
+Object.keys(proyectos_filtros).forEach(function (municipio) {
     var option = document.createElement('option');
     option.value = municipio;
     option.textContent = municipio;
@@ -522,10 +525,10 @@ Object.keys(proyectos_filtros).forEach(function(municipio) {
 });
 
 // Evento al cambiar selección de municipio
-selectorMunicipio.addEventListener('change', function() {
+selectorMunicipio.addEventListener('change', function () {
     var dependencias = proyectos_filtros[this.value] || {};
     selectorDependencia.innerHTML = '<option value="">-- Selecciona una dependencia --</option>'; // Limpiar y establecer opción por defecto
-    Object.keys(dependencias).forEach(function(dependencia) {
+    Object.keys(dependencias).forEach(function (dependencia) {
         var option = document.createElement('option');
         option.value = dependencia;
         option.textContent = dependencia;
@@ -540,16 +543,16 @@ function filtrarYMostrarProyectos() {
     var dependenciaSeleccionada = selectorDependencia.value;
 
     // Filtrar proyectos basado en los selectores
-    var proyectosFiltrados = proyectos_filtros[municipioSeleccionado] && proyectos_filtros[municipioSeleccionado][dependenciaSeleccionada] 
-        ? proyectos_filtros[municipioSeleccionado][dependenciaSeleccionada] 
+    var proyectosFiltrados = proyectos_filtros[municipioSeleccionado] && proyectos_filtros[municipioSeleccionado][dependenciaSeleccionada]
+        ? proyectos_filtros[municipioSeleccionado][dependenciaSeleccionada]
         : [];
 
     // Actualizar el contenido del div resultadosProyectos
-    var html = proyectosFiltrados.map(function(proyecto) {
+    var html = proyectosFiltrados.map(function (proyecto) {
         return '<div class="proyecto-container">' +
-                    '<div class="proyecto-nombre">' + proyecto['Proyecto'] + '</div>' +
-                    '<div class="proyecto-porcentaje">' + Math.round(proyecto['Porcentaje de avance'] * 100) + '%</div>' +
-                '</div>';
+            '<div class="proyecto-nombre">' + proyecto['Proyecto'] + '</div>' +
+            '<div class="proyecto-porcentaje">' + Math.round(proyecto['Porcentaje de avance'] * 100) + '%</div>' +
+            '</div>';
     }).join('');
     document.getElementById('resultadosProyectos').innerHTML = html;
 }
@@ -563,40 +566,40 @@ if (selectorMunicipio.options.length > 0) {
 ;
 
 //Boton de abrir y cerrar
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     var sidebar = document.getElementById('sidebar');
     var mapElement = document.getElementById('map');
     var toggleButton = document.getElementById('toggleSidebar');
-    
-    toggleButton.addEventListener('click', function() {
-      var isOpen = sidebar.style.left === '0px';
-      
-      if (isOpen) {
-        sidebar.style.left = '-300px'; // Esconde la barra lateral
-        mapElement.style.left = '0'; // Extiende el mapa
-        toggleButton.textContent = 'Abrir panel de información'; // Cambia el texto del botón
-        toggleButton.style.left = '10px'; // Mueve el botón hacia la izquierda
-      } else {
-        sidebar.style.left = '0px'; // Muestra la barra lateral
-        mapElement.style.left = '300px'; // Restablece el mapa
-        toggleButton.textContent = 'Cerrar'; // Cambia el texto del botón
-        toggleButton.style.left = '310px'; // Mueve el botón junto con la barra lateral
-      }
-  
-      // Ajusta el tamaño del mapa después de la transición
-      setTimeout(function() {
-        map.invalidateSize();
-      }, 300);
+
+    toggleButton.addEventListener('click', function () {
+        var isOpen = sidebar.style.left === '0px';
+
+        if (isOpen) {
+            sidebar.style.left = '-300px'; // Esconde la barra lateral
+            mapElement.style.left = '0'; // Extiende el mapa
+            toggleButton.textContent = 'Abrir panel de información'; // Cambia el texto del botón
+            toggleButton.style.left = '10px'; // Mueve el botón hacia la izquierda
+        } else {
+            sidebar.style.left = '0px'; // Muestra la barra lateral
+            mapElement.style.left = '300px'; // Restablece el mapa
+            toggleButton.textContent = 'Cerrar'; // Cambia el texto del botón
+            toggleButton.style.left = '310px'; // Mueve el botón junto con la barra lateral
+        }
+
+        // Ajusta el tamaño del mapa después de la transición
+        setTimeout(function () {
+            map.invalidateSize();
+        }, 300);
     });
-  
+
     // Inicializa el estado del sidebar y botón
     sidebar.style.left = '0px'; // Barra lateral visible
     mapElement.style.left = '300px'; // Espacio para la barra lateral
     toggleButton.style.left = '310px'; // Botón se mueve con la barra lateral
-  });
-  
-  //SELECTOR POR PROYECTO----------
-  document.addEventListener('DOMContentLoaded', function() {
+});
+
+//SELECTOR POR PROYECTO----------
+document.addEventListener('DOMContentLoaded', function () {
     // Asumiendo que 'proyectosInfo' es un objeto que contiene tus proyectos y sus nombres.
     // La clave es el identificador del proyecto (nombre de la variable), y el valor es el nombre a mostrar.
     var proyectosInfo = {
@@ -620,7 +623,7 @@ document.addEventListener('DOMContentLoaded', function() {
         SIP1B2023009: window.SIP1B2023009.features[0].properties.Name,
         UPL1A2023004: window.UPL1A2023004.features[0].properties.Name,
     };
-    
+
 
     function llenarSelectorProyectos() {
         var selectorProyecto = document.getElementById('selectorProyecto');
@@ -635,7 +638,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     llenarSelectorProyectos();
 
-    document.getElementById('selectorProyecto').addEventListener('change', function() {
+    document.getElementById('selectorProyecto').addEventListener('change', function () {
         var proyectoSeleccionado = this.value;
         if (proyectoSeleccionado) {
             zoomAProyecto(proyectoSeleccionado);
@@ -660,7 +663,7 @@ var proyectos = [
     { id: "SIP1B2023007", proyecto: window.SIP1B2023007.features[0].properties.Name, dependencia: window.SIP1B2023007.features[0].properties["DEPENDENCIA/ORGANISMO"] },
     // Continúa para el resto de tus proyectos
 ];
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     var selectorDependenciaOrganismo = document.getElementById('selectorDependenciaOrganismo');
     let dependencias = [...new Set(proyectos.map(proyecto => proyecto.dependencia))];
 
@@ -671,7 +674,7 @@ document.addEventListener('DOMContentLoaded', function() {
         selectorDependenciaOrganismo.appendChild(option);
     });
 });
-selectorDependenciaOrganismo.addEventListener('change', function() {
+selectorDependenciaOrganismo.addEventListener('change', function () {
     const dependenciaSeleccionada = this.value;
     const listaProyectosDependencia = document.getElementById('listaProyectosDependencia');
 
